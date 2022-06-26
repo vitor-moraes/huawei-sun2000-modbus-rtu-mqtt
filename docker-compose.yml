@@ -1,0 +1,13 @@
+version: "3.2"
+services:
+
+  huawei-solar-rtu:
+    container_name: huawei-solar-rtu
+    restart: unless-stopped
+    image: huawei-solar-rtu:latest
+    user: root
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    environment:
+      - INVERTER_PORT=/dev/ttyUSB0
+      - MQTT_HOST=192.168.1.15
