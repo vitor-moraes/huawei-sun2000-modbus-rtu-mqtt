@@ -18,16 +18,24 @@ inverter = base_solar.HuaweiSolar(inverter_port, slave=1)
 inverter._slave = 1
 inverter.wait = 1
 
-#vars = ['state_1','state_2', 'state_3', 'alarm_1', 'alarm_2', 'alarm_3', 'pv_01_voltage', 'pv_01_current', 'pv_02_voltage','pv_02_current', 'input_power', 'grid_voltage', 
-#'grid_current', 'day_active_power_peak', 'active_power', 'reactive_power', 
-#'grid_frequency', 'efficiency', 'internal_temperature', 'insulation_resistance', 'device_status', 'fault_code', 'startup_time', 'shutdown_time', 'accumulated_yield_energy',
-#'daily_yield_energy', 'grid_A_voltage', 'active_grid_A_current', 'power_meter_active_power', 
+#vars = ['state_1','state_2', 'state_3', 'alarm_1', 'alarm_2', 
+#'alarm_3', 'pv_01_voltage', 'pv_01_current', 'pv_02_voltage',
+#'pv_02_current', 'input_power', 'grid_voltage', 
+#'grid_current', 'day_active_power_peak', 'active_power', 
+#'reactive_power', 'grid_frequency', 'efficiency', 
+#'internal_temperature', 'insulation_resistance', 'device_status', 
+#'fault_code', 'startup_time', 'shutdown_time', 
+#'accumulated_yield_energy', 'daily_yield_energy', 'grid_A_voltage', 
+#'active_grid_A_current', 'power_meter_active_power', 
 #'grid_exported_energy', 'grid_accumulated_energy']
 
-#vars = ['alarm_1', 'pv_01_voltage', 'pv_01_current', 'pv_02_voltage','pv_02_current', 'input_power', 'grid_voltage', 
-#'grid_current', 'day_active_power_peak', 'active_power', 'reactive_power', 
-#'grid_frequency', 'efficiency', 'internal_temperature', 'insulation_resistance', 'device_status', 'fault_code', 'startup_time', 'shutdown_time', 'accumulated_yield_energy',
-#'daily_yield_energy', 'grid_A_voltage', 'active_grid_A_current', 'power_meter_active_power', 
+#vars = ['alarm_1', 'pv_01_voltage', 'pv_01_current', 'pv_02_voltage',
+#'pv_02_current', 'input_power', 'grid_voltage', 'grid_current', 
+#'day_active_power_peak', 'active_power', 'reactive_power', 
+#'grid_frequency', 'efficiency', 'internal_temperature', 
+#'insulation_resistance', 'device_status', 'fault_code', 'startup_time', 
+#'shutdown_time', 'accumulated_yield_energy', 'daily_yield_energy', 
+#'grid_A_voltage', 'active_grid_A_current', 'power_meter_active_power', 
 #'grid_exported_energy', 'grid_accumulated_energy']
 
 def on_connect(client, userdata, flags, rc):
@@ -57,22 +65,30 @@ def settingUpMQTT():
 
 def modbusAccess(clientMQTT):
 
-    vars_immediate = ['pv_01_voltage', 'pv_01_current', 'pv_02_voltage','pv_02_current', 'input_power', 'grid_voltage', 
+    vars_immediate = ['pv_01_voltage', 'pv_01_current', 'pv_02_voltage',
+    'pv_02_current', 'input_power', 'grid_voltage', 
     'grid_current', 'active_power', 
-    'grid_A_voltage', 'active_grid_A_current', 'power_meter_active_power']
+    'grid_A_voltage', 'active_grid_A_current',
+    'power_meter_active_power']
 
-    vars_calculated = ['day_active_power_peak', 'efficiency', 'internal_temperature', 'insulation_resistance', 'device_status', 'fault_code', 'accumulated_yield_energy',
-    'daily_yield_energy', 'grid_exported_energy', 'grid_accumulated_energy']
+    vars_calculated = ['day_active_power_peak', 'efficiency', 
+    'internal_temperature', 'insulation_resistance', 'device_status', 
+    'fault_code', 'accumulated_yield_energy',
+    'daily_yield_energy', 'grid_exported_energy', 
+    'grid_accumulated_energy']
 
     cont = 0
     while True:
-
+        log.info("--> Started transmission")
+         
         for i in vars_immediate:
             try:
                 mid = inverter.get(i)
-                log.info("Immediate variable: " + i + " | " + mid)
+                log.info(i)
+                log.info(mid)
 
-                #clientMQTT.publish(topic="emon/NodeHuawei/"+i, payload= str(mid.value), qos=1, retain=False)
+                #clientMQTT.publish(topic="emon/NodeHuawei/"+i, 
+                #payload= str(mid.value), qos=1, retain=False)
             except:
                 pass
 
@@ -80,18 +96,25 @@ def modbusAccess(clientMQTT):
             for i in vars_calculated:
                 try:
                     mid = inverter.get(i)
-                    log.info("Calculated variable: " + i + " | " + mid)
+                    log.info(i)
+                    log.info(mid)
 
-                    #clientMQTT.publish(topic="emon/NodeHuawei/"+i, payload= str(mid.value), qos=1, retain=False)
+                    #clientMQTT.publish(topic="emon/NodeHuawei/"+i, 
+                    #payload= str(mid.value), qos=1, retain=False)
                 except:
                     pass
 
             cont = 0
 
-        cont = cont + 1   
+        cont = cont + 1 
+        log.info("--> Ended transmission") 
         # time.sleep(300) # 5min
-        time.sleep(5) # 5seg
+        time.sleep(15) # 15seg
 
-clientMQTT = settingUpMQTT()
+# clientMQTT = settingUpMQTT()
+# modbusAccess(clientMQTT)
+
+clientMQTT = ""
 modbusAccess(clientMQTT)
+
 # clientMQTT.loop_stop()
