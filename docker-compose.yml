@@ -11,3 +11,4 @@ services:
     environment:
       - INVERTER_PORT=/dev/ttyUSB0
       - MQTT_HOST=192.168.1.15
+      - BROKER_PORT=1883

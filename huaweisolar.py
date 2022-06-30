@@ -3,8 +3,8 @@ from base_solar import HuaweiSolar
 import base_solar
 import paho.mqtt.client as mqtt
 import os
-
 import logging
+
 FORMAT = ('%(asctime)-15s %(threadName)-15s '
           '%(levelname)-8s %(module)-15s:%(lineno)-8s %(message)s')
 logging.basicConfig(format=FORMAT)
@@ -13,6 +13,7 @@ log.setLevel(logging.INFO)
 
 inverter_port = os.getenv('INVERTER_PORT', '/dev/ttyUSB0')
 mqtt_host = os.getenv('MQTT_HOST', '192.168.1.15')
+broker_port = os.getenv('BROKER_PORT', '1883')
 
 inverter = base_solar.HuaweiSolar(inverter_port, slave=1)
 inverter._slave = 1
@@ -39,8 +40,9 @@ inverter.wait = 1
 #'grid_exported_energy', 'grid_accumulated_energy']
 
 def on_connect(client, userdata, flags, rc):
+    
     if rc==0:
-        client.connected_flag=True #set flag
+        client.connected_flag=True
         log.info("MQTT OK!")
     else:
         log.info("MQTT FAILURE. ERROR CODE: %s",rc)
@@ -48,12 +50,11 @@ def on_connect(client, userdata, flags, rc):
 def settingUpMQTT():
 
     mqtt.Client.connected_flag=False
-    broker_port = 1883
     clientMQTT = mqtt.Client()
     clientMQTT.on_connect=on_connect 
     clientMQTT.loop_start()
-    log.info("Connecting to MQTT broker: %s ",mqtt_host)
-    clientMQTT.username_pw_set(username="",password="")
+    log.info("Connecting to MQTT broker: %s ", mqtt_host)
+    clientMQTT.username_pw_set(username="", password="")
     clientMQTT.connect(mqtt_host, broker_port) 
     while not clientMQTT.connected_flag: 
         log.info("...")
@@ -79,8 +80,8 @@ def modbusAccess(clientMQTT):
 
     cont = 0
     while True:
+        
         log.info("--> Started transmission")
-         
         for i in vars_immediate:
             try:
                 mid = inverter.get(i)
@@ -103,7 +104,6 @@ def modbusAccess(clientMQTT):
                     #payload= str(mid.value), qos=1, retain=False)
                 except:
                     pass
-
             cont = 0
 
         cont = cont + 1 
