@@ -11,6 +11,7 @@ import library.base_solar as base_solar
 import paho.mqtt.client as mqtt
 import os
 import logging
+import json
 
 FORMAT = ('%(asctime)-15s %(threadName)-15s '
           '%(levelname)-8s %(module)-15s:%(lineno)-8s %(message)s')
@@ -44,11 +45,8 @@ if code_mode == "RASP":
         clientMQTT.on_connect=on_connect 
         clientMQTT.loop_start()
         log.info("Connecting to MQTT broker: %s ", mqtt_host)
-        log.info("AQUI 0")
         #clientMQTT.username_pw_set(username="", password="")
-        log.info("AQUI 1")
         clientMQTT.connect(mqtt_host, 1883, 60) 
-        log.info("AQUI 2")
         while not clientMQTT.connected_flag: 
             log.info("...")
         time.sleep(1)
@@ -125,9 +123,19 @@ elif code_mode == "PC":
     client.connect("192.168.100.108", 1883, 60) #Mosquitto comunication
 
     for i in range(10000):
-        client.publish('raspberryTopic', payload=str(i), qos=0,
+
+        # Sending a JSON
+        data = {"sepalLength": "6.4","sepalWidth":  "3.2","petalLength": "4.5","petalWidth":  "1.5"}
+        print(json.dumps(data))
+        data = json.dumps(data)
+        client.publish('raspberryTopic', payload=data, qos=0,
         retain=False)
         log.info(f"send {i} to raspberryTopic")
+
+        #A info
+        # client.publish('raspberryTopic', payload=json, qos=0,
+        # retain=False)
+        # log.info(f"send {i} to raspberryTopic")
         time.sleep(10)
 
     client.loop_forever()
