@@ -1,4 +1,4 @@
-from libraries.docker_log import log_for_me
+from libraries.docker_log import log_info
 from datetime import datetime, timedelta
 import time
 
@@ -16,7 +16,7 @@ def wait_minutes_after_round_minute(minutes):
     next_moment = (next_round_minute_time + delta)
     now = datetime.now()
     wait_seconds = (next_moment - now).seconds
-    log_for_me("Waiting " + str(wait_seconds) + " seconds to start in " + str(next_moment))
+    log_info("Waiting " + str(wait_seconds) + " seconds to start in " + str(next_moment))
     time.sleep(wait_seconds)
 
 

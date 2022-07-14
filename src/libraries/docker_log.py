@@ -6,5 +6,5 @@ logging.basicConfig(format=FORMAT)
 log = logging.getLogger()
 log.setLevel(logging.INFO)
 
-def log_for_me(message):
+def log_info(message):
     log.info(message)
