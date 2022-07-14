@@ -10,7 +10,7 @@ services:
       - /dev/ttyUSB0:/dev/ttyUSB0
     environment:
       - INVERTER_PORT=/dev/ttyUSB0
-      - MQTT_HOST=192.168.100.108 # Mosquitto test: "192.168.100.108" | Other: "127.0.0.1"
+      - MQTT_HOST=192.168.43.102 # Mosquitto test: "192.168.100.108", "192.168.43.102" | Other: "127.0.0.1"
       - BROKER_PORT=1883 # Usually: "1883"
       - USE_CREDENTIALS=NO
       - USER_NAME=none

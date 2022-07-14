@@ -17,17 +17,16 @@ def send_data(client, storable_data):
         log_for_me('ERROR PUBLISHING DATA TO MQTT BROKER')
 
 def format_data_to_serialized_json(info):
-    log_for_me(info)
     data = {
-                'ID': 0,
-                'Valor': 0,
-                'Aplicacao': 0,
-                'Local': 0,
-                'Tipo': 0,
-                'Variavel': 0,
-                'Unidade': 0,
-                'Rede': 0,
-                'Professor': 0
+                'ID': 'INV_1',
+                'Valor': info['value'],
+                'Aplicacao': 'PFC_Vitor_Moraes',
+                'Local': 'Salas Ds',
+                'Tipo': 'Inversor',
+                'Variavel': info['variable'],
+                'Unidade': info['unit'],
+                'Rede': 'Wi-Fi',
+                'Professor': 'Paciencia'
             }
     serialized_data = json.dumps(data)
     return serialized_data
@@ -46,7 +45,9 @@ def pick_up_and_send_inverter_data(client):
         try:
             imm_response = get_solar_data(imm_var)
             log_for_me(imm_var + ' | ' + str(imm_response))
-            json = format_data_to_serialized_json({'variable': imm_var, 'response': imm_response})
+            json = format_data_to_serialized_json({'variable': imm_var,
+                                                   'value': imm_response.value, 
+                                                   'unit': imm_response.unit})
             send_data(client, json)
         except:
             pass
@@ -55,12 +56,15 @@ def pick_up_and_send_inverter_data(client):
         try:
             cal_response = get_solar_data(cal_var)
             log_for_me(cal_var + ' | ' + str(cal_response))
-            json = format_data_to_serialized_json({'variable': cal_var, 'response': cal_response})
+            json = format_data_to_serialized_json({'variable': cal_var,
+                                                   'value': cal_response.value,
+                                                   'unit': cal_response.unit})
             send_data(client, json)
         except:
             pass
     log_for_me("--> Ended transmission") 
 
+log_for_me("Begin:") 
 client = connect()
 # --> add here function to wait to start in right time
 while True:
