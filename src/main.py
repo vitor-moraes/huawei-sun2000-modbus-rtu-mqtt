@@ -4,6 +4,7 @@ Info
 import time
 import json
 from libraries.docker_log import log_for_me
+from libraries.wait_to_certain_time import wait_minutes_after_round_minute
 from connection.mqtt import connect
 from data.inverter_data import IMMEDIATE_VARS, CALCULATED_VARS, get_data
 
@@ -62,13 +63,13 @@ def pick_up_and_send_inverter_data(client):
             send_data(client, json)
         except:
             pass
-    log_for_me("--> Ended transmission") 
+    log_for_me("--> Ended transmission")
 
 log_for_me("Begin:") 
 client = connect()
-# --> add here function to wait to start in right time
+wait_minutes_after_round_minute(2)
 while True:
     response = pick_up_and_send_inverter_data(client)
-    time.sleep(5)
-    # time.sleep(300) # 5min
+    time.sleep(600) # 10min
+    # time.sleep(5) # 5seg
 # client.loop_forever()
