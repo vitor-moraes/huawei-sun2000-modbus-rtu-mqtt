@@ -1,50 +1,57 @@
-'''
-Info from the project
-'''
-
-code_mode = 'PC' #Possibilities: 'PC', 'RASP' and 'TEST'
-data_mode = 'TEST_FILE' #Possibilites: 'TEST_FILE' and 'INVERTER'
-
-import time
-from library.base_solar import HuaweiSolar
-import library.base_solar as base_solar
-import paho.mqtt.client as mqtt
 import os
-import logging
+import time
 import json
+from libraries.docker_log import log_for_me
+from development.connection.mqtt import connect
+from development.data.inverter_data import IMMEDIATE_VARS, CALCULATED_VARS, get_data
 
-FORMAT = ('%(asctime)-15s %(threadName)-15s '
-          '%(levelname)-8s %(module)-15s:%(lineno)-8s %(message)s')
-logging.basicConfig(format=FORMAT)
-log = logging.getLogger()
-log.setLevel(logging.INFO)
+def main(data_mode):
+    log_for_me("||| STARTING PC MODE |||")
 
-def main():
+    # def modbusAccess(clientMQTT):
+    #     cont = 0
+    #     while True:
+    #         log_for_me("--> Started transmission")
+    #         for i in IMMEDIATE_VARS:
+    #             try:
+    #                 mid = get_data(i)
+    #                 log_for_me(i)
+    #                 log_for_me(mid)
+    #                 #clientMQTT.publish(topic="emon/NodeHuawei/"+i, 
+    #                 #payload= str(mid.value), qos=1, retain=False)
+    #             except:
+    #                 pass
+    #         if(cont > 0):
+    #             for i in CALCULATED_VARS:
+    #                 try:
+    #                     mid = get_data(i)
+    #                     log_for_me(i)
+    #                     log_for_me(mid)
+    #                     #clientMQTT.publish(topic="emon/NodeHuawei/"+i, 
+    #                     #payload= str(mid.value), qos=1, retain=False)
+    #                 except:
+    #                     pass
+    #             cont = 0
+    #         cont = cont + 1 
+    #         log_for_me("--> Ended transmission") 
+    #         # time.sleep(300) # 5min
+    #         time.sleep(15) # 15seg
 
-    log.info("||| STARTING PC MODE |||")
-    def on_connect(client, userdata, flags, rc):
-        time.sleep(10)
-        log.info(f"Connected with result code {rc}")
-        
-    client = mqtt.Client()
-    client.on_connect = on_connect
-    #client.username_pw_set(username="raspberrypie", password="rasp1234") #How to use credentials
-    client.connect("192.168.100.108", 1883, 60) #Mosquitto comunication
-
-    for i in range(10000):
-
-        # Sending a JSON
-        data = {"sepalLength": "6.4","sepalWidth":  "3.2","petalLength": "4.5","petalWidth":  "1.5"}
-        print(json.dumps(data))
-        data = json.dumps(data)
-        client.publish('raspberryTopic', payload=data, qos=0,
-        retain=False)
-        log.info(f"send {i} to raspberryTopic")
-
-        #A info
-        # client.publish('raspberryTopic', payload=json, qos=0,
-        # retain=False)
-        # log.info(f"send {i} to raspberryTopic")
+    def get_solar_data():
+        data = {}
+        if data_mode == 'INVERTER':
+            data = {"Index": 0,"Type": "Inverter"}
+            data = json.dumps(data)
+        else:
+            data = {"Index": 1,"Type": "Offline"}
+            data = json.dumps(data)
+        return data
+    
+    client = connect()
+    while True:
+        data = get_solar_data()
+        client.publish('raspberryTopic', payload=data, qos=0, retain=False)
+        log_for_me(f"send to raspberryTopic")
         time.sleep(10)
 
     client.loop_forever()

@@ -10,5 +10,8 @@ services:
       # - /dev/ttyUSB0:/dev/ttyUSB0
     environment:
       - INVERTER_PORT=/dev/ttyUSB0
-      - MQTT_HOST=127.0.0.1
-      - BROKER_PORT=1883
+      - MQTT_HOST=192.168.100.108 # "192.168.100.108" | "127.0.0.1"
+      - BROKER_PORT=1883 # | "1883"
+      - USE_CREDENTIALS=NO
+      - USER_NAME=none
+      - PASSWORD=none
