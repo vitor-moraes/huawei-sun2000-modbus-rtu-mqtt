@@ -4,7 +4,7 @@ Info
 import time
 import json
 from libraries.docker_log import log_info
-from libraries.wait_to_certain_time import wait_minutes_after_round_minute
+from libraries.wait_to_certain_time import wait_minutes_after_round_to_10_minute
 from connection.mqtt import connect
 from data.inverter_data import IMMEDIATE_VARS, CALCULATED_VARS, get_data
 
@@ -67,7 +67,7 @@ def pick_up_and_send_inverter_data(client):
 
 log_info("| === START === |") 
 client = connect()
-wait_minutes_after_round_minute(2)
+wait_minutes_after_round_to_10_minute(2)
 while True:
     response = pick_up_and_send_inverter_data(client)
     time.sleep(300) # 5min

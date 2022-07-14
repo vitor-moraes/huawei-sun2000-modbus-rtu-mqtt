@@ -10,7 +10,7 @@ def absolute_next_round_minute():
     next_round_minute = next_round_minute + timedelta(minutes=10)
     return next_round_minute
 
-def wait_minutes_after_round_minute(minutes):
+def wait_minutes_after_round_to_10_minute(minutes):
     delta = timedelta(minutes=minutes)
     next_round_minute_time = absolute_next_round_minute()
     next_moment = (next_round_minute_time + delta)
