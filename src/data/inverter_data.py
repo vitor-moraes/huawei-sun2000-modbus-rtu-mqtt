@@ -13,10 +13,10 @@ CALCULATED_VARS = ['day_active_power_peak', 'efficiency',
                 'daily_yield_energy', 'grid_exported_energy', 
                 'grid_accumulated_energy']
 
+def get_data(var_name):
+    return inverter.get(var_name)
+    
 inverter_port = os.getenv('INVERTER_PORT', '/dev/ttyUSB0')
 inverter = HuaweiSolar(inverter_port, slave=1)
 inverter._slave = 1
 inverter.wait = 1
-
-def get_data(var_name):
-    return inverter.get(var_name)
