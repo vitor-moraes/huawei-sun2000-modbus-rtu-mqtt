@@ -6,8 +6,8 @@ services:
     restart: unless-stopped
     image: huawei-solar-rtu:latest
     user: root
-    # devices:
-      # - /dev/ttyUSB0:/dev/ttyUSB0
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
     environment:
       - INVERTER_PORT=/dev/ttyUSB0
       - MQTT_HOST=192.168.43.102 # Mosquitto test: "192.168.100.108", "192.168.43.102" | Other: "127.0.0.1"
