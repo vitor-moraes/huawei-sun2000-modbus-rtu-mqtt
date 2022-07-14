@@ -1,6 +1,7 @@
 '''
 Info
 '''
+import os
 import time
 import json
 from libraries.docker_log import log_info
@@ -8,12 +9,12 @@ from libraries.wait_to_certain_time import wait_minutes_after_round_to_10_minute
 from connection.mqtt import connect
 from data.inverter_data import IMMEDIATE_VARS, CALCULATED_VARS, get_data
 
-DATA_MODE = 'INVERTER' #Possibilites: 'OFFLINE' and 'INVERTER'
-TOPIC = 'raspberryTopic'
+DATA_MODE = os.getenv('DATA_MODE', 'INVERTER') #Possibilites: 'OFFLINE' and 'INVERTER' 
+MQTT_TOPIC = os.getenv('MQTT_TOPIC', 'raspberryTopic')
 
 def send_data(client, storable_data):
     try:
-        client.publish(TOPIC, payload=storable_data, qos=0, retain=False)
+        client.publish(MQTT_TOPIC, payload=storable_data, qos=0, retain=False)
     except:
         log_info('ERROR PUBLISHING DATA TO MQTT BROKER')
 

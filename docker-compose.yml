@@ -15,3 +15,5 @@ services:
       - USE_CREDENTIALS=NO
       - USER_NAME=none
       - PASSWORD=none
+      - DATA_MODE=INVERTER
+      - MQTT_TOPIC=raspberryTopic
