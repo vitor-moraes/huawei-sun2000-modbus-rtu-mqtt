@@ -1,3 +1,7 @@
+#
+# To run this code on a PC, you need to comment the 'devices:' line and it content
+#
+
 version: "3.2"
 services:
 
@@ -15,5 +19,5 @@ services:
       - USE_CREDENTIALS=NO
       - USER_NAME=none
       - PASSWORD=none
-      - DATA_MODE=INVERTER
       - MQTT_TOPIC=raspberryTopic
+      - DATA_MODE=INVERTER # INVERTER or OFFLINE
