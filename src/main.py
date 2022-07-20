@@ -11,7 +11,7 @@ from data.inverter_data import IMMEDIATE_VARS, CALCULATED_VARS, get_data
 from data.offline import get_example_data
 
 INTERVAL_BETWEEN_GROUP_OF_REQUESTS = 300 # Standard = 300
-INTERVAL_BETWEEN_REQUESTS = 10 # Standard = 0
+INTERVAL_BETWEEN_REQUESTS = 0 # Standard = 0
 MINUTE_TO_START_GETTING_DATA_AFTER_ROUND_TO_10 = 2 # Standard = 2
 
 DATA_MODE = os.getenv('DATA_MODE', 'INVERTER')
@@ -74,7 +74,7 @@ def pick_up_and_send_inverter_data(client):
 
 log_info("| === START === |") 
 client = connect()
-# wait_minutes_after_round_to_10_minute(MINUTE_TO_START_GETTING_DATA_AFTER_ROUND_TO_10)
+wait_minutes_after_round_to_10_minute(MINUTE_TO_START_GETTING_DATA_AFTER_ROUND_TO_10)
 while True:
     response = pick_up_and_send_inverter_data(client)
     time.sleep(INTERVAL_BETWEEN_GROUP_OF_REQUESTS)
