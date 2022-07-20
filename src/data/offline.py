@@ -1,6 +1,3 @@
-'''
-
-'''
 import random
 from libraries.docker_log  import log_info
 
