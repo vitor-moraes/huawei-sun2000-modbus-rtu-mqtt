@@ -19,7 +19,7 @@ vars = ['alarm_1', 'pv_01_voltage', 'pv_01_current', 'pv_02_voltage',
 'grid_A_voltage', 'active_grid_A_current', 'power_meter_active_power', 
 'grid_exported_energy', 'grid_accumulated_energy']
 
-* Available varibales in the library base_solar.py
+* Available variables in the library base_solar.py
 REGISTERS = [
     "model_name",
     "serial_number",
