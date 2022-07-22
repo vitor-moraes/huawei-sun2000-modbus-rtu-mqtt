@@ -59,7 +59,7 @@ def pick_up_and_send_inverter_data(client):
     for cal_var in CALCULATED_VARS:
         try:
             cal_response = get_solar_data(cal_var)
-            log_info(imm_var + ' = ' + str(imm_response.value) + " " + str(imm_response.unit))
+            log_info(cal_var + ' = ' + str(cal_response.value) + " " + str(cal_response.unit))
             json = format_data_to_serialized_json({'variable': cal_var,
                                                    'value': cal_response.value,
                                                    'unit': cal_response.unit})
