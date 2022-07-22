@@ -71,7 +71,7 @@ def pick_up_and_send_inverter_data(client):
 
 log_info("| === START === |") 
 client = connect()
-wait_minutes_after_round_to_10_minute(MINUTE_TO_START_GETTING_DATA_AFTER_ROUND_TO_10)
+# wait_minutes_after_round_to_10_minute(MINUTE_TO_START_GETTING_DATA_AFTER_ROUND_TO_10)
 while True:
     response = pick_up_and_send_inverter_data(client)
     time.sleep(INTERVAL_BETWEEN_GROUP_OF_REQUESTS)
