@@ -22,14 +22,14 @@ def send_data(client, storable_data):
 
 def format_data_to_serialized_json(info):
     data = {
-                'ID': 'INV_1',
+                'ID': 'SUN2000_1',
                 'Valor': info['value'],
-                'Aplicacao': 'PFC_Vitor_Moraes',
-                'Local': 'Salas Ds',
+                'Aplicacao': 'Geração Solar',
+                'Local': 'BLOCO D',
                 'Tipo': 'Inversor',
                 'Variavel': info['variable'],
                 'Unidade': info['unit'],
-                'Rede': 'Wi-Fi',
+                'Rede': 'MQTT',
                 'Professor': 'Paciencia'
             }
     serialized_data = json.dumps(data)
