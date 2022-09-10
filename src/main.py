@@ -47,7 +47,7 @@ def pick_up_and_send_inverter_data(client):
     for imm_var in IMMEDIATE_VARS:
         try:
             imm_response = get_solar_data(imm_var)
-            log_info(imm_var + ' = ' + str(imm_response.value) + " " + str(imm_response.unit))
+            log_info(imm_var +' = ' + str(imm_response.value) + " " + str(imm_response.unit))
             json = format_data_to_serialized_json({'variable': imm_var,
                                                    'value': imm_response.value, 
                                                    'unit': imm_response.unit})
@@ -75,4 +75,3 @@ wait_minutes_after_round_to_10_minute(MINUTE_TO_START_GETTING_DATA_AFTER_ROUND_T
 while True:
     response = pick_up_and_send_inverter_data(client)
     time.sleep(INTERVAL_BETWEEN_GROUP_OF_REQUESTS)
-# client.loop_forever()
