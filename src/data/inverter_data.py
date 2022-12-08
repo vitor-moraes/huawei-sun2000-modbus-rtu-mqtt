@@ -15,6 +15,7 @@ IMMEDIATE_VARS = [
 'power_meter_active_power',
 
 'reactive_power',
+'power_factor',
 'grid_frequency',
 'startup_time',
 'shutdown_time', 

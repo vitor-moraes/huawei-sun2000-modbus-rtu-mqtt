@@ -26,6 +26,7 @@ vars = [
 * To validate:
 vars = [
 'reactive_power',
+'power_factor',
 'grid_frequency',
 'startup_time',
 'shutdown_time', 
